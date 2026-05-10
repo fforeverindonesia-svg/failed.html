@@ -1,715 +1,993 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pembayaran Gagal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Pembayaran Gagal</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --red:#ff2d2d;
+    --red2:#c80000;
+    --gold:#d7b164;
+    --dark:#050505;
+    --white:#ffffff;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#050505;
+    overflow-x:hidden;
+    color:white;
+    min-height:100vh;
+    position:relative;
+}
+
+/* =========================
+BACKGROUND
+========================= */
+
+.bg{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    overflow:hidden;
+    background:
+    radial-gradient(circle at top left, rgba(255,0,0,.16), transparent 25%),
+    radial-gradient(circle at bottom right, rgba(255,90,0,.15), transparent 30%),
+    radial-gradient(circle at center, rgba(255,0,0,.08), transparent 40%),
+    #050505;
+}
+
+.bg::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:3px 3px;
+    opacity:.15;
+}
+
+.glow{
+    position:absolute;
+    width:550px;
+    height:550px;
+    border-radius:50%;
+    filter:blur(100px);
+    opacity:.18;
+    animation:moveGlow 12s infinite alternate ease-in-out;
+}
+
+.glow1{
+    background:red;
+    top:-180px;
+    left:-180px;
+}
+
+.glow2{
+    background:orange;
+    bottom:-180px;
+    right:-180px;
+    animation-delay:4s;
+}
+
+@keyframes moveGlow{
+    0%{
+        transform:translate(0,0) scale(1);
     }
-
-    body{
-      font-family:'Poppins',sans-serif;
-      background:#050505;
-      overflow-x:hidden;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      position:relative;
-      color:#fff;
-      padding:20px;
+    100%{
+        transform:translate(80px,-60px) scale(1.15);
     }
+}
 
-    /* Background */
-    body::before{
-      content:'';
-      position:fixed;
-      inset:0;
-      background:
-      radial-gradient(circle at 20% 20%, rgba(255,0,0,.18), transparent 20%),
-      radial-gradient(circle at 80% 30%, rgba(255,80,0,.15), transparent 20%),
-      radial-gradient(circle at 50% 80%, rgba(255,0,0,.1), transparent 25%),
-      #050505;
-      z-index:-3;
-    }
+/* =========================
+PARTICLES
+========================= */
 
-    body::after{
-      content:'';
-      position:fixed;
-      inset:0;
-      background:
-      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-      background-size:3px 3px;
-      opacity:.15;
-      z-index:-2;
-    }
+.particles{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:-5;
+}
 
-    .particles{
-      position:fixed;
-      inset:0;
-      overflow:hidden;
-      z-index:-1;
-    }
+.particle{
+    position:absolute;
+    background:#ff3b00;
+    border-radius:50%;
+    box-shadow:0 0 12px #ff3b00;
+    animation:float linear infinite;
+}
 
-    .particle{
-      position:absolute;
-      width:4px;
-      height:4px;
-      background:#ff3c00;
-      border-radius:50%;
-      box-shadow:0 0 10px #ff3c00;
-      animation:float 8s linear infinite;
-      opacity:.7;
-    }
+@keyframes float{
 
-    @keyframes float{
-      0%{
+    0%{
         transform:translateY(100vh) scale(0);
         opacity:0;
-      }
-      10%{
+    }
+
+    10%{
         opacity:1;
-      }
-      100%{
+    }
+
+    100%{
         transform:translateY(-120px) translateX(100px) scale(1.5);
         opacity:0;
-      }
     }
+}
 
-    .container{
-      width:100%;
-      max-width:920px;
-      animation:fadeIn 1s ease;
+/* =========================
+LOADER
+========================= */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#050505;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    transition:1s;
+}
+
+.loader.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.loader-circle{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.1);
+    border-top:4px solid red;
+    animation:spin 1s linear infinite;
+    box-shadow:0 0 25px rgba(255,0,0,.45);
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
     }
+}
 
-    @keyframes fadeIn{
-      from{
+/* =========================
+WRAPPER
+========================= */
+
+.wrapper{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:
+    max(20px, env(safe-area-inset-top))
+    20px
+    max(20px, env(safe-area-inset-bottom));
+}
+
+.container{
+    width:100%;
+    max-width:980px;
+    animation:fadeUp 1s ease;
+}
+
+@keyframes fadeUp{
+    from{
         opacity:0;
-        transform:translateY(30px);
-      }
-      to{
+        transform:translateY(40px);
+    }
+    to{
         opacity:1;
         transform:translateY(0);
-      }
     }
+}
 
-    /* Top Icon */
-    .failed-icon{
-      width:120px;
-      height:120px;
-      margin:0 auto 20px;
-      border:4px solid #ff1e1e;
-      border-radius:50%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      position:relative;
-      box-shadow:
-      0 0 30px rgba(255,0,0,.7),
-      inset 0 0 25px rgba(255,0,0,.4);
-      animation:pulse 2s infinite;
-    }
+/* =========================
+TOP ICON
+========================= */
 
-    .failed-icon::before,
-    .failed-icon::after{
-      content:'';
-      position:absolute;
-      width:50px;
-      height:10px;
-      background:#ff2d2d;
-      border-radius:10px;
-      box-shadow:0 0 15px #ff0000;
-    }
+.failed-wrap{
+    display:flex;
+    justify-content:center;
+    margin-bottom:22px;
+}
 
-    .failed-icon::before{
-      transform:rotate(45deg);
-    }
+.failed-icon{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:4px solid var(--red);
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:
+    0 0 25px rgba(255,0,0,.85),
+    inset 0 0 20px rgba(255,0,0,.45);
+    animation:pulse 2s infinite;
+}
 
-    .failed-icon::after{
-      transform:rotate(-45deg);
-    }
+.failed-icon::before,
+.failed-icon::after{
+    content:'';
+    position:absolute;
+    width:50px;
+    height:10px;
+    border-radius:10px;
+    background:var(--red);
+    box-shadow:0 0 14px red;
+}
 
-    @keyframes pulse{
-      0%,100%{
+.failed-icon::before{
+    transform:rotate(45deg);
+}
+
+.failed-icon::after{
+    transform:rotate(-45deg);
+}
+
+@keyframes pulse{
+
+    0%,100%{
         transform:scale(1);
-      }
-      50%{
-        transform:scale(1.05);
-      }
     }
 
-    .title{
-      text-align:center;
-      font-size:76px;
-      font-weight:800;
-      line-height:1;
-      margin-bottom:10px;
-      text-transform:uppercase;
-      letter-spacing:2px;
+    50%{
+        transform:scale(1.06);
     }
+}
 
-    .title span:first-child{
-      color:#e8e8e8;
-      text-shadow:0 0 20px rgba(255,255,255,.2);
-    }
+/* =========================
+TITLE
+========================= */
 
-    .title span:last-child{
-      color:#ff2a2a;
-      text-shadow:
-      0 0 15px rgba(255,0,0,.8),
-      0 0 35px rgba(255,0,0,.5);
-    }
+.title{
+    text-align:center;
+    font-size:clamp(42px,8vw,82px);
+    font-weight:900;
+    line-height:1;
+    margin-bottom:14px;
+}
 
-    .subtitle{
-      text-align:center;
-      font-size:28px;
-      color:#d0d0d0;
-      line-height:1.5;
-      margin-bottom:45px;
-    }
+.title .white{
+    color:#f0f0f0;
+    text-shadow:0 0 15px rgba(255,255,255,.2);
+}
 
-    /* Event Card */
-    .event-card{
-      background:
-      linear-gradient(145deg, rgba(10,10,10,.95), rgba(20,20,20,.85));
-      border:2px solid rgba(255,255,255,.12);
-      border-radius:28px;
-      padding:30px;
-      margin-bottom:30px;
-      display:flex;
-      gap:30px;
-      align-items:center;
-      box-shadow:
-      0 0 40px rgba(255,0,0,.08),
-      inset 0 0 25px rgba(255,255,255,.02);
-      position:relative;
-      overflow:hidden;
-    }
+.title .red{
+    color:var(--red);
+    text-shadow:
+    0 0 20px rgba(255,0,0,.9),
+    0 0 40px rgba(255,0,0,.5);
+}
 
-    .event-card::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-      120deg,
-      transparent,
-      rgba(255,255,255,.04),
-      transparent);
-      transform:translateX(-100%);
-      animation:shine 6s infinite;
-    }
+.subtitle{
+    text-align:center;
+    font-size:clamp(16px,2vw,30px);
+    color:#d9d9d9;
+    line-height:1.5;
+    margin-bottom:40px;
+}
 
-    @keyframes shine{
-      100%{
+/* =========================
+CARD
+========================= */
+
+.card{
+    position:relative;
+    background:
+    linear-gradient(145deg,
+    rgba(12,12,12,.96),
+    rgba(20,20,20,.88));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:30px;
+    overflow:hidden;
+    backdrop-filter:blur(15px);
+    box-shadow:
+    0 0 45px rgba(255,0,0,.08),
+    inset 0 0 20px rgba(255,255,255,.02);
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.04),
+    transparent);
+    transform:translateX(-100%);
+    animation:shine 8s infinite;
+}
+
+@keyframes shine{
+    100%{
         transform:translateX(100%);
-      }
+    }
+}
+
+/* =========================
+EVENT
+========================= */
+
+.event{
+    display:flex;
+    gap:30px;
+    padding:35px;
+    flex-wrap:wrap;
+}
+
+.left{
+    flex:1;
+    min-width:260px;
+}
+
+.right{
+    flex:1;
+    min-width:260px;
+    text-align:right;
+}
+
+.top-small{
+    color:#e9c56f;
+    letter-spacing:6px;
+    margin-bottom:10px;
+    font-size:clamp(14px,2vw,22px);
+}
+
+.westlife{
+    font-size:clamp(50px,7vw,76px);
+    font-weight:900;
+    line-height:1;
+    background:linear-gradient(to bottom,#fff8de,#ca8b44);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.num{
+    font-size:clamp(100px,16vw,190px);
+    line-height:1;
+    font-weight:900;
+    background:linear-gradient(to bottom,#ffd48f,#a23f00);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.tour{
+    font-size:clamp(18px,2vw,32px);
+    color:var(--gold);
+    font-weight:700;
+    letter-spacing:3px;
+}
+
+.date{
+    font-size:clamp(18px,2vw,34px);
+    margin-bottom:20px;
+    font-weight:600;
+}
+
+.venue{
+    font-size:clamp(30px,4vw,58px);
+    line-height:1.1;
+    color:var(--gold);
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+.site{
+    font-size:clamp(14px,2vw,22px);
+    color:var(--gold);
+    letter-spacing:2px;
+}
+
+/* =========================
+SUMMARY
+========================= */
+
+.summary{
+    margin-top:30px;
+    padding:35px;
+}
+
+.summary-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    color:#ff5757;
+    font-size:clamp(22px,3vw,34px);
+    font-weight:700;
+    margin-bottom:25px;
+    padding-bottom:20px;
+    border-bottom:1px dashed rgba(255,80,80,.35);
+}
+
+.ticket{
+    width:35px;
+    height:24px;
+    border:2px solid #ff5555;
+    border-radius:6px;
+    transform:rotate(-12deg);
+    position:relative;
+}
+
+.ticket::before,
+.ticket::after{
+    content:'';
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#050505;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.ticket::before{
+    left:-5px;
+}
+
+.ticket::after{
+    right:-5px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px 45px;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    font-size:clamp(14px,2vw,24px);
+    line-height:1.5;
+}
+
+.label{
+    color:#d0d0d0;
+    min-width:180px;
+}
+
+.value{
+    text-align:right;
+    font-weight:500;
+}
+
+.badge{
+    background:#a80000;
+    color:white;
+    padding:8px 18px;
+    border-radius:12px;
+    display:inline-block;
+    box-shadow:0 0 15px rgba(255,0,0,.35);
+}
+
+/* =========================
+WARNING
+========================= */
+
+.warning{
+    margin-top:30px;
+    padding:28px;
+    display:flex;
+    gap:20px;
+    align-items:center;
+    background:
+    linear-gradient(145deg,
+    rgba(100,0,0,.35),
+    rgba(40,0,0,.75));
+    border:1px solid rgba(255,0,0,.45);
+    border-radius:24px;
+    box-shadow:0 0 25px rgba(255,0,0,.18);
+    animation:warningPulse 2s infinite alternate;
+}
+
+@keyframes warningPulse{
+    from{
+        box-shadow:0 0 15px rgba(255,0,0,.15);
     }
 
-    .event-left{
-      flex:1;
+    to{
+        box-shadow:0 0 35px rgba(255,0,0,.35);
+    }
+}
+
+.warn-icon{
+    min-width:70px;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:3px solid var(--red);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:38px;
+    font-weight:800;
+    color:var(--red);
+    box-shadow:0 0 15px rgba(255,0,0,.35);
+}
+
+.warning h3{
+    font-size:clamp(24px,3vw,38px);
+    color:#ff5a5a;
+    margin-bottom:5px;
+}
+
+.warning p{
+    font-size:clamp(14px,2vw,24px);
+    margin-bottom:8px;
+}
+
+.warning small{
+    color:#bdbdbd;
+    font-size:clamp(12px,1.5vw,20px);
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+.buttons{
+    display:flex;
+    gap:20px;
+    margin-top:30px;
+}
+
+.btn{
+    flex:1;
+    height:88px;
+    border:none;
+    border-radius:22px;
+    cursor:pointer;
+    font-size:clamp(18px,2vw,34px);
+    font-weight:700;
+    transition:.35s;
+    position:relative;
+    overflow:hidden;
+}
+
+.btn::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.2),
+    transparent);
+    transform:translateX(-100%);
+}
+
+.btn:hover::before{
+    animation:btnshine .9s forwards;
+}
+
+@keyframes btnshine{
+    100%{
+        transform:translateX(100%);
+    }
+}
+
+.btn-dark{
+    background:#0b0b0b;
+    color:#f1f1f1;
+    border:2px solid #ff633d;
+}
+
+.btn-red{
+    background:linear-gradient(145deg,#ff3535,#c70000);
+    color:white;
+    box-shadow:0 10px 30px rgba(255,0,0,.25);
+}
+
+.btn:hover{
+    transform:translateY(-4px);
+}
+
+.btn-red:hover{
+    box-shadow:0 18px 40px rgba(255,0,0,.35);
+}
+
+/* =========================
+FOOTER
+========================= */
+
+.footer{
+    text-align:center;
+    color:#8b8b8b;
+    margin-top:30px;
+    font-size:clamp(12px,1.5vw,22px);
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .event{
+        flex-direction:column;
+        text-align:center;
     }
 
-    .event-left h3{
-      font-size:22px;
-      letter-spacing:8px;
-      color:#e7c36c;
-      margin-bottom:10px;
+    .right{
+        text-align:center;
     }
 
-    .westlife{
-      font-size:68px;
-      font-weight:800;
-      background:linear-gradient(to bottom,#fff6d5,#d18b44);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      line-height:1;
-    }
-
-    .number25{
-      font-size:160px;
-      font-weight:800;
-      background:linear-gradient(to bottom,#ffd38f,#a84300);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      line-height:1;
-      text-shadow:0 0 25px rgba(255,140,0,.3);
-    }
-
-    .tour{
-      font-size:32px;
-      color:#d7b164;
-      font-weight:700;
-      letter-spacing:4px;
-    }
-
-    .event-right{
-      flex:1;
-      text-align:right;
-    }
-
-    .event-right .date{
-      font-size:34px;
-      font-weight:600;
-      margin-bottom:25px;
-    }
-
-    .event-right .venue{
-      font-size:58px;
-      line-height:1.1;
-      font-weight:800;
-      color:#d7b164;
-      margin-bottom:25px;
-    }
-
-    .event-right .website{
-      font-size:22px;
-      color:#d7b164;
-      letter-spacing:2px;
-    }
-
-    /* Summary */
-    .summary{
-      background:
-      linear-gradient(145deg, rgba(10,10,10,.95), rgba(20,20,20,.85));
-      border:2px solid rgba(255,255,255,.1);
-      border-radius:28px;
-      padding:35px;
-      margin-bottom:28px;
-      box-shadow:
-      0 0 30px rgba(255,0,0,.06);
-    }
-
-    .summary-title{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      color:#ff4545;
-      font-size:32px;
-      font-weight:700;
-      margin-bottom:25px;
-      border-bottom:1px dashed rgba(255,70,70,.4);
-      padding-bottom:20px;
-    }
-
-    .ticket-icon{
-      width:34px;
-      height:22px;
-      border:2px solid #ff4545;
-      border-radius:6px;
-      position:relative;
-      transform:rotate(-10deg);
-      box-shadow:0 0 10px rgba(255,0,0,.4);
-    }
-
-    .ticket-icon::before,
-    .ticket-icon::after{
-      content:'';
-      position:absolute;
-      width:8px;
-      height:8px;
-      background:#050505;
-      border-radius:50%;
-      top:50%;
-      transform:translateY(-50%);
-    }
-
-    .ticket-icon::before{
-      left:-5px;
-    }
-
-    .ticket-icon::after{
-      right:-5px;
-    }
-
-    .summary-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:25px 50px;
+    .grid{
+        grid-template-columns:1fr;
     }
 
     .item{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      font-size:24px;
-      color:#ddd;
-    }
-
-    .label{
-      color:#cfcfcf;
-      min-width:220px;
+        flex-direction:column;
     }
 
     .value{
-      text-align:right;
-      font-weight:500;
-      color:#fff;
-    }
-
-    .failed-badge{
-      background:#a00000;
-      color:#fff;
-      padding:8px 20px;
-      border-radius:10px;
-      display:inline-block;
-      box-shadow:0 0 15px rgba(255,0,0,.4);
-    }
-
-    /* Warning */
-    .warning{
-      background:linear-gradient(
-      145deg,
-      rgba(90,0,0,.4),
-      rgba(40,0,0,.7));
-      border:2px solid rgba(255,0,0,.45);
-      border-radius:24px;
-      padding:28px;
-      display:flex;
-      align-items:center;
-      gap:22px;
-      margin-bottom:30px;
-      box-shadow:
-      0 0 30px rgba(255,0,0,.18);
-      animation:warningGlow 2s infinite alternate;
-    }
-
-    @keyframes warningGlow{
-      from{
-        box-shadow:0 0 20px rgba(255,0,0,.15);
-      }
-      to{
-        box-shadow:0 0 35px rgba(255,0,0,.4);
-      }
-    }
-
-    .warning-icon{
-      width:70px;
-      height:70px;
-      border-radius:50%;
-      border:3px solid #ff3030;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      color:#ff3030;
-      font-size:38px;
-      font-weight:700;
-      box-shadow:0 0 20px rgba(255,0,0,.4);
-      flex-shrink:0;
-    }
-
-    .warning h3{
-      font-size:38px;
-      color:#ff4a4a;
-      margin-bottom:5px;
-    }
-
-    .warning p{
-      font-size:24px;
-      color:#eee;
-    }
-
-    .warning small{
-      display:block;
-      margin-top:10px;
-      color:#bbb;
-      font-size:20px;
-    }
-
-    /* Buttons */
-    .buttons{
-      display:flex;
-      gap:22px;
-    }
-
-    .btn{
-      flex:1;
-      height:90px;
-      border:none;
-      border-radius:20px;
-      font-size:34px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.35s;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .btn::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-      120deg,
-      transparent,
-      rgba(255,255,255,.18),
-      transparent);
-      transform:translateX(-100%);
-    }
-
-    .btn:hover::before{
-      animation:btnshine 1s forwards;
-    }
-
-    @keyframes btnshine{
-      100%{
-        transform:translateX(100%);
-      }
-    }
-
-    .btn-dark{
-      background:#0a0a0a;
-      color:#ddd;
-      border:2px solid #ff5a36;
-      box-shadow:0 0 20px rgba(255,80,50,.08);
-    }
-
-    .btn-dark:hover{
-      transform:translateY(-5px);
-      box-shadow:0 15px 30px rgba(255,80,50,.18);
-    }
-
-    .btn-red{
-      background:linear-gradient(145deg,#ff2f2f,#d00000);
-      color:#fff;
-      box-shadow:0 10px 35px rgba(255,0,0,.28);
-    }
-
-    .btn-red:hover{
-      transform:translateY(-5px);
-      box-shadow:0 20px 40px rgba(255,0,0,.4);
-    }
-
-    footer{
-      text-align:center;
-      margin-top:35px;
-      color:#888;
-      font-size:22px;
-    }
-
-    /* Responsive */
-    @media(max-width:900px){
-
-      .title{
-        font-size:56px;
-      }
-
-      .subtitle{
-        font-size:20px;
-      }
-
-      .event-card{
-        flex-direction:column;
-        text-align:center;
-      }
-
-      .event-right{
-        text-align:center;
-      }
-
-      .westlife{
-        font-size:48px;
-      }
-
-      .number25{
-        font-size:120px;
-      }
-
-      .event-right .venue{
-        font-size:40px;
-      }
-
-      .summary-grid{
-        grid-template-columns:1fr;
-      }
-
-      .item{
-        flex-direction:column;
-      }
-
-      .value{
         text-align:left;
-      }
-
-      .buttons{
-        flex-direction:column;
-      }
-
-      .btn{
-        font-size:24px;
-      }
     }
-  </style>
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .warning{
+        flex-direction:column;
+        text-align:center;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .summary,
+    .event{
+        padding:22px;
+    }
+
+    .warning{
+        padding:20px;
+    }
+
+    .failed-icon{
+        width:95px;
+        height:95px;
+    }
+
+}
+
+/* =========================
+ANIMATION
+========================= */
+
+.fade-out{
+    animation:fadeOut .7s forwards;
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        transform:scale(.98);
+    }
+}
+
+</style>
 </head>
 <body>
 
-  <!-- Particles -->
-  <div class="particles">
-    <div class="particle" style="left:5%;animation-delay:0s"></div>
-    <div class="particle" style="left:15%;animation-delay:2s"></div>
-    <div class="particle" style="left:25%;animation-delay:1s"></div>
-    <div class="particle" style="left:35%;animation-delay:4s"></div>
-    <div class="particle" style="left:45%;animation-delay:2.5s"></div>
-    <div class="particle" style="left:55%;animation-delay:3s"></div>
-    <div class="particle" style="left:65%;animation-delay:5s"></div>
-    <div class="particle" style="left:75%;animation-delay:1.5s"></div>
-    <div class="particle" style="left:85%;animation-delay:3.5s"></div>
-    <div class="particle" style="left:95%;animation-delay:6s"></div>
-  </div>
+<!-- LOADER -->
+<div class="loader" id="loader">
+    <div class="loader-circle"></div>
+</div>
 
-  <div class="container">
+<!-- BACKGROUND -->
+<div class="bg">
+    <div class="glow glow1"></div>
+    <div class="glow glow2"></div>
+</div>
 
-    <!-- Icon -->
-    <div class="failed-icon"></div>
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
 
-    <!-- Title -->
+<!-- MAIN -->
+<div class="wrapper">
+
+<div class="container" id="page">
+
+    <!-- ICON -->
+    <div class="failed-wrap">
+        <div class="failed-icon"></div>
+    </div>
+
+    <!-- TITLE -->
     <div class="title">
-      <span>PEMBAYARAN</span>
-      <span> GAGAL</span>
+        <span class="white">PEMBAYARAN</span>
+        <span class="red"> GAGAL</span>
     </div>
 
     <div class="subtitle">
-      Transaksi Anda tidak dapat diproses.<br>
-      Silakan periksa kembali data pemesanan Anda.
+        Transaksi Anda tidak dapat diproses.<br>
+        Silakan periksa kembali data pemesanan Anda.
     </div>
 
-    <!-- Event -->
-    <div class="event-card">
+    <!-- EVENT -->
+    <div class="card event">
 
-      <div class="event-left">
-        <h3>25 YEARS OF HITS</h3>
+        <div class="left">
 
-        <div class="westlife">WESTLIFE</div>
+            <div class="top-small">
+                25 YEARS OF HITS
+            </div>
 
-        <div class="number25">25</div>
+            <div class="westlife">
+                WESTLIFE
+            </div>
 
-        <div class="tour">
-          THE ANNIVERSARY<br>
-          WORLD TOUR
-        </div>
-      </div>
+            <div class="num">
+                25
+            </div>
 
-      <div class="event-right">
-        <div class="date">
-          SATURDAY, 23 JANUARY 2027
-        </div>
+            <div class="tour">
+                THE ANNIVERSARY<br>
+                WORLD TOUR
+            </div>
 
-        <div class="venue">
-          GELORA BUNG KARNO<br>
-          MAIN STADIUM
         </div>
 
-        <div class="website">
-          WESTLIFESTADIUMSHOWJKT.COM
+        <div class="right">
+
+            <div class="date">
+                SATURDAY, 23 JANUARY 2027
+            </div>
+
+            <div class="venue">
+                GELORA BUNG KARNO<br>
+                MAIN STADIUM
+            </div>
+
+            <div class="site">
+                WESTLIFESTADIUMSHOWJKT.COM
+            </div>
+
         </div>
-      </div>
 
     </div>
 
-    <!-- Summary -->
-    <div class="summary">
+    <!-- SUMMARY -->
+    <div class="card summary">
 
-      <div class="summary-title">
-        <div class="ticket-icon"></div>
-        RINGKASAN PEMESANAN
-      </div>
-
-      <div class="summary-grid">
-
-        <div class="item">
-          <div class="label">NAMA EVENT</div>
-          <div class="value">
-            WESTLIFE 25 YEARS OF HITS<br>
-            THE ANNIVERSARY WORLD TOUR
-          </div>
+        <div class="summary-title">
+            <div class="ticket"></div>
+            RINGKASAN PEMESANAN
         </div>
 
-        <div class="item">
-          <div class="label">TANGGAL</div>
-          <div class="value">
-            SATURDAY, 23 JANUARY 2027
-          </div>
+        <div class="grid">
+
+            <div class="item">
+                <div class="label">NAMA EVENT</div>
+                <div class="value">
+                    WESTLIFE 25 YEARS OF HITS<br>
+                    THE ANNIVERSARY WORLD TOUR
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">TANGGAL</div>
+                <div class="value">
+                    SATURDAY, 23 JANUARY 2027
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">VENUE</div>
+                <div class="value">
+                    GELORA BUNG KARNO<br>
+                    MAIN STADIUM
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">LAYANAN</div>
+                <div class="value">
+                    TIKET ONLINE ID
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">STATUS PEMBAYARAN</div>
+                <div class="value">
+                    <span class="badge">FAILED</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">ORDER ID</div>
+                <div class="value">
+                    WL25-23052025-1121-FAILED
+                </div>
+            </div>
+
         </div>
 
-        <div class="item">
-          <div class="label">VENUE</div>
-          <div class="value">
-            GELORA BUNG KARNO<br>
-            MAIN STADIUM
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="label">LAYANAN</div>
-          <div class="value">
-            Ticketing Service / Jastip Tiket
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="label">STATUS PEMBAYARAN</div>
-          <div class="value">
-            <span class="failed-badge">FAILED</span>
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="label">WAKTU TRANSAKSI</div>
-          <div class="value">
-            23 Mei 2025, 11:21 WIB
-          </div>
-        </div>
-
-        <div class="item">
-          <div class="label">ORDER ID</div>
-          <div class="value">
-            WL25-23052025-1121-FAILED
-          </div>
-        </div>
-
-      </div>
     </div>
 
-    <!-- Warning -->
+    <!-- WARNING -->
     <div class="warning">
 
-      <div class="warning-icon">!</div>
+        <div class="warn-icon">!</div>
 
-      <div>
-        <h3>DATA TIDAK LENGKAP</h3>
-        <p>Silahkan periksa kembali data pemesanan anda</p>
-        <small>
-          Pastikan semua data sudah benar dan lengkap sebelum melakukan pembayaran.
-        </small>
-      </div>
+        <div>
+
+            <h3>DATA TIDAK LENGKAP</h3>
+
+            <p>
+                Silahkan periksa kembali data pemesanan anda
+            </p>
+
+            <small>
+                Pastikan semua data sudah benar dan lengkap sebelum melakukan pembayaran.
+            </small>
+
+        </div>
 
     </div>
 
-    <!-- Buttons -->
+    <!-- BUTTON -->
     <div class="buttons">
 
-      <button class="btn btn-dark">
-        ↻ COBA LAGI
-      </button>
+        <button class="btn btn-dark" onclick="goRetry()">
+            ↻ COBA LAGI
+        </button>
 
-      <button class="btn btn-red">
-        🏠 KEMBALI KE BERANDA
-      </button>
+        <button class="btn btn-red" onclick="goHome()">
+            🏠 KEMBALI KE BERANDA
+        </button>
 
     </div>
 
-    <footer>
-      © 2025 Ticketing Service. All rights reserved.
-    </footer>
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 Ticketing Service. All rights reserved.
+    </div>
 
-  </div>
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+LOADER
+========================= */
+
+window.addEventListener('load',()=>{
+
+    setTimeout(()=>{
+        document.getElementById('loader').classList.add('hide');
+    },1000);
+
+});
+
+/* =========================
+PARTICLES
+========================= */
+
+const particles = document.getElementById('particles');
+
+for(let i=0;i<70;i++){
+
+    const p = document.createElement('div');
+
+    p.classList.add('particle');
+
+    p.style.left = Math.random()*100 + '%';
+
+    p.style.width =
+    p.style.height =
+    (Math.random()*4+2)+'px';
+
+    p.style.animationDuration =
+    (Math.random()*6+5)+'s';
+
+    p.style.animationDelay =
+    Math.random()*5+'s';
+
+    p.style.opacity = Math.random();
+
+    particles.appendChild(p);
+
+}
+
+/* =========================
+REDIRECT BUTTON
+========================= */
+
+function goRetry(){
+
+    document.getElementById('page').classList.add('fade-out');
+
+    setTimeout(()=>{
+
+        window.location.href =
+        'https://fforeverindonesia-svg.github.io/LOADING/';
+
+    },700);
+
+}
+
+function goHome(){
+
+    document.getElementById('page').classList.add('fade-out');
+
+    setTimeout(()=>{
+
+        window.location.href =
+        'https://fforeverindonesia-svg.github.io/WESTLIFE-2/';
+
+    },700);
+
+}
+
+/* =========================
+PARALLAX
+========================= */
+
+document.addEventListener('mousemove',(e)=>{
+
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+
+    document.querySelectorAll('.glow').forEach(g=>{
+
+        g.style.transform =
+        `translate(${x*35}px, ${y*35}px)`;
+
+    });
+
+});
+
+/* =========================
+MOBILE TOUCH EFFECT
+========================= */
+
+document.querySelectorAll('.btn').forEach(btn=>{
+
+    btn.addEventListener('touchstart',()=>{
+
+        btn.style.transform='scale(.96)';
+
+    });
+
+    btn.addEventListener('touchend',()=>{
+
+        btn.style.transform='scale(1)';
+
+    });
+
+});
+
+</script>
 
 </body>
 </html>
