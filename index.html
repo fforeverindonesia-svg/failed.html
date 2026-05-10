@@ -1,277 +1,715 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAILED PAYMENT</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pembayaran Gagal</title>
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
-}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-body{
-background:#000;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-overflow:hidden;
-color:white;
-}
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-body::before{
-content:'';
-position:fixed;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle at top,#ff000055,#000 60%);
-z-index:-1;
-animation:bg 5s infinite alternate;
-}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#050505;
+      overflow-x:hidden;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+      color:#fff;
+      padding:20px;
+    }
 
-@keyframes bg{
-0%{transform:scale(1);}
-100%{transform:scale(1.1);}
-}
+    /* Background */
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+      radial-gradient(circle at 20% 20%, rgba(255,0,0,.18), transparent 20%),
+      radial-gradient(circle at 80% 30%, rgba(255,80,0,.15), transparent 20%),
+      radial-gradient(circle at 50% 80%, rgba(255,0,0,.1), transparent 25%),
+      #050505;
+      z-index:-3;
+    }
 
-.card{
-width:100%;
-max-width:450px;
-background:rgba(0,0,0,.92);
-border-radius:40px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,.2);
-box-shadow:
-0 0 50px rgba(255,0,0,.4);
-backdrop-filter:blur(10px);
-animation:card .7s ease;
-}
+    body::after{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size:3px 3px;
+      opacity:.15;
+      z-index:-2;
+    }
 
-@keyframes card{
-from{
-opacity:0;
-transform:translateY(40px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
+    .particles{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      z-index:-1;
+    }
 
-.banner{
-width:100%;
-height:260px;
-object-fit:cover;
-display:block;
-}
+    .particle{
+      position:absolute;
+      width:4px;
+      height:4px;
+      background:#ff3c00;
+      border-radius:50%;
+      box-shadow:0 0 10px #ff3c00;
+      animation:float 8s linear infinite;
+      opacity:.7;
+    }
 
-.content{
-padding:28px;
-}
+    @keyframes float{
+      0%{
+        transform:translateY(100vh) scale(0);
+        opacity:0;
+      }
+      10%{
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-120px) translateX(100px) scale(1.5);
+        opacity:0;
+      }
+    }
 
-.title{
-font-size:20px;
-font-weight:bold;
-color:#ff2d55;
-margin-bottom:25px;
-text-shadow:0 0 10px red;
-}
+    .container{
+      width:100%;
+      max-width:920px;
+      animation:fadeIn 1s ease;
+    }
 
-.row{
-display:flex;
-justify-content:space-between;
-gap:15px;
-margin-bottom:28px;
-align-items:flex-start;
-}
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(30px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
 
-.label{
-font-size:17px;
-color:#8f8f8f;
-min-width:110px;
-}
+    /* Top Icon */
+    .failed-icon{
+      width:120px;
+      height:120px;
+      margin:0 auto 20px;
+      border:4px solid #ff1e1e;
+      border-radius:50%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+      box-shadow:
+      0 0 30px rgba(255,0,0,.7),
+      inset 0 0 25px rgba(255,0,0,.4);
+      animation:pulse 2s infinite;
+    }
 
-.value{
-font-size:18px;
-font-weight:bold;
-text-align:right;
-flex:1;
-line-height:1.5;
-word-break:break-word;
-}
+    .failed-icon::before,
+    .failed-icon::after{
+      content:'';
+      position:absolute;
+      width:50px;
+      height:10px;
+      background:#ff2d2d;
+      border-radius:10px;
+      box-shadow:0 0 15px #ff0000;
+    }
 
-.failed{
-background:#ff0000;
-padding:16px 40px;
-border-radius:18px;
-font-weight:bold;
-font-size:20px;
-box-shadow:0 0 20px red;
-animation:pulse 1s infinite alternate;
-}
+    .failed-icon::before{
+      transform:rotate(45deg);
+    }
 
-@keyframes pulse{
-from{
-transform:scale(1);
-box-shadow:0 0 10px red;
-}
-to{
-transform:scale(1.05);
-box-shadow:0 0 30px red;
-}
-}
+    .failed-icon::after{
+      transform:rotate(-45deg);
+    }
 
-.bottom{
-margin-top:30px;
-height:12px;
-background:#111;
-border-radius:20px;
-overflow:hidden;
-}
+    @keyframes pulse{
+      0%,100%{
+        transform:scale(1);
+      }
+      50%{
+        transform:scale(1.05);
+      }
+    }
 
-.bottom span{
-display:block;
-height:100%;
-width:35%;
-margin-left:auto;
-background:red;
-border-radius:20px;
-box-shadow:0 0 20px red;
-animation:load 2s infinite alternate;
-}
+    .title{
+      text-align:center;
+      font-size:76px;
+      font-weight:800;
+      line-height:1;
+      margin-bottom:10px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
 
-@keyframes load{
-from{
-width:35%;
-}
-to{
-width:45%;
-}
-}
+    .title span:first-child{
+      color:#e8e8e8;
+      text-shadow:0 0 20px rgba(255,255,255,.2);
+    }
 
-@media(max-width:500px){
+    .title span:last-child{
+      color:#ff2a2a;
+      text-shadow:
+      0 0 15px rgba(255,0,0,.8),
+      0 0 35px rgba(255,0,0,.5);
+    }
 
-.banner{
-height:220px;
-}
+    .subtitle{
+      text-align:center;
+      font-size:28px;
+      color:#d0d0d0;
+      line-height:1.5;
+      margin-bottom:45px;
+    }
 
-.title{
-font-size:17px;
-}
+    /* Event Card */
+    .event-card{
+      background:
+      linear-gradient(145deg, rgba(10,10,10,.95), rgba(20,20,20,.85));
+      border:2px solid rgba(255,255,255,.12);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:30px;
+      display:flex;
+      gap:30px;
+      align-items:center;
+      box-shadow:
+      0 0 40px rgba(255,0,0,.08),
+      inset 0 0 25px rgba(255,255,255,.02);
+      position:relative;
+      overflow:hidden;
+    }
 
-.label{
-font-size:15px;
-min-width:90px;
-}
+    .event-card::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,.04),
+      transparent);
+      transform:translateX(-100%);
+      animation:shine 6s infinite;
+    }
 
-.value{
-font-size:16px;
-}
+    @keyframes shine{
+      100%{
+        transform:translateX(100%);
+      }
+    }
 
-.failed{
-padding:14px 30px;
-font-size:18px;
-}
+    .event-left{
+      flex:1;
+    }
 
-}
-</style>
+    .event-left h3{
+      font-size:22px;
+      letter-spacing:8px;
+      color:#e7c36c;
+      margin-bottom:10px;
+    }
+
+    .westlife{
+      font-size:68px;
+      font-weight:800;
+      background:linear-gradient(to bottom,#fff6d5,#d18b44);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1;
+    }
+
+    .number25{
+      font-size:160px;
+      font-weight:800;
+      background:linear-gradient(to bottom,#ffd38f,#a84300);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1;
+      text-shadow:0 0 25px rgba(255,140,0,.3);
+    }
+
+    .tour{
+      font-size:32px;
+      color:#d7b164;
+      font-weight:700;
+      letter-spacing:4px;
+    }
+
+    .event-right{
+      flex:1;
+      text-align:right;
+    }
+
+    .event-right .date{
+      font-size:34px;
+      font-weight:600;
+      margin-bottom:25px;
+    }
+
+    .event-right .venue{
+      font-size:58px;
+      line-height:1.1;
+      font-weight:800;
+      color:#d7b164;
+      margin-bottom:25px;
+    }
+
+    .event-right .website{
+      font-size:22px;
+      color:#d7b164;
+      letter-spacing:2px;
+    }
+
+    /* Summary */
+    .summary{
+      background:
+      linear-gradient(145deg, rgba(10,10,10,.95), rgba(20,20,20,.85));
+      border:2px solid rgba(255,255,255,.1);
+      border-radius:28px;
+      padding:35px;
+      margin-bottom:28px;
+      box-shadow:
+      0 0 30px rgba(255,0,0,.06);
+    }
+
+    .summary-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#ff4545;
+      font-size:32px;
+      font-weight:700;
+      margin-bottom:25px;
+      border-bottom:1px dashed rgba(255,70,70,.4);
+      padding-bottom:20px;
+    }
+
+    .ticket-icon{
+      width:34px;
+      height:22px;
+      border:2px solid #ff4545;
+      border-radius:6px;
+      position:relative;
+      transform:rotate(-10deg);
+      box-shadow:0 0 10px rgba(255,0,0,.4);
+    }
+
+    .ticket-icon::before,
+    .ticket-icon::after{
+      content:'';
+      position:absolute;
+      width:8px;
+      height:8px;
+      background:#050505;
+      border-radius:50%;
+      top:50%;
+      transform:translateY(-50%);
+    }
+
+    .ticket-icon::before{
+      left:-5px;
+    }
+
+    .ticket-icon::after{
+      right:-5px;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:25px 50px;
+    }
+
+    .item{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      font-size:24px;
+      color:#ddd;
+    }
+
+    .label{
+      color:#cfcfcf;
+      min-width:220px;
+    }
+
+    .value{
+      text-align:right;
+      font-weight:500;
+      color:#fff;
+    }
+
+    .failed-badge{
+      background:#a00000;
+      color:#fff;
+      padding:8px 20px;
+      border-radius:10px;
+      display:inline-block;
+      box-shadow:0 0 15px rgba(255,0,0,.4);
+    }
+
+    /* Warning */
+    .warning{
+      background:linear-gradient(
+      145deg,
+      rgba(90,0,0,.4),
+      rgba(40,0,0,.7));
+      border:2px solid rgba(255,0,0,.45);
+      border-radius:24px;
+      padding:28px;
+      display:flex;
+      align-items:center;
+      gap:22px;
+      margin-bottom:30px;
+      box-shadow:
+      0 0 30px rgba(255,0,0,.18);
+      animation:warningGlow 2s infinite alternate;
+    }
+
+    @keyframes warningGlow{
+      from{
+        box-shadow:0 0 20px rgba(255,0,0,.15);
+      }
+      to{
+        box-shadow:0 0 35px rgba(255,0,0,.4);
+      }
+    }
+
+    .warning-icon{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      border:3px solid #ff3030;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:#ff3030;
+      font-size:38px;
+      font-weight:700;
+      box-shadow:0 0 20px rgba(255,0,0,.4);
+      flex-shrink:0;
+    }
+
+    .warning h3{
+      font-size:38px;
+      color:#ff4a4a;
+      margin-bottom:5px;
+    }
+
+    .warning p{
+      font-size:24px;
+      color:#eee;
+    }
+
+    .warning small{
+      display:block;
+      margin-top:10px;
+      color:#bbb;
+      font-size:20px;
+    }
+
+    /* Buttons */
+    .buttons{
+      display:flex;
+      gap:22px;
+    }
+
+    .btn{
+      flex:1;
+      height:90px;
+      border:none;
+      border-radius:20px;
+      font-size:34px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.35s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,.18),
+      transparent);
+      transform:translateX(-100%);
+    }
+
+    .btn:hover::before{
+      animation:btnshine 1s forwards;
+    }
+
+    @keyframes btnshine{
+      100%{
+        transform:translateX(100%);
+      }
+    }
+
+    .btn-dark{
+      background:#0a0a0a;
+      color:#ddd;
+      border:2px solid #ff5a36;
+      box-shadow:0 0 20px rgba(255,80,50,.08);
+    }
+
+    .btn-dark:hover{
+      transform:translateY(-5px);
+      box-shadow:0 15px 30px rgba(255,80,50,.18);
+    }
+
+    .btn-red{
+      background:linear-gradient(145deg,#ff2f2f,#d00000);
+      color:#fff;
+      box-shadow:0 10px 35px rgba(255,0,0,.28);
+    }
+
+    .btn-red:hover{
+      transform:translateY(-5px);
+      box-shadow:0 20px 40px rgba(255,0,0,.4);
+    }
+
+    footer{
+      text-align:center;
+      margin-top:35px;
+      color:#888;
+      font-size:22px;
+    }
+
+    /* Responsive */
+    @media(max-width:900px){
+
+      .title{
+        font-size:56px;
+      }
+
+      .subtitle{
+        font-size:20px;
+      }
+
+      .event-card{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      .event-right{
+        text-align:center;
+      }
+
+      .westlife{
+        font-size:48px;
+      }
+
+      .number25{
+        font-size:120px;
+      }
+
+      .event-right .venue{
+        font-size:40px;
+      }
+
+      .summary-grid{
+        grid-template-columns:1fr;
+      }
+
+      .item{
+        flex-direction:column;
+      }
+
+      .value{
+        text-align:left;
+      }
+
+      .buttons{
+        flex-direction:column;
+      }
+
+      .btn{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="card">
+  <!-- Particles -->
+  <div class="particles">
+    <div class="particle" style="left:5%;animation-delay:0s"></div>
+    <div class="particle" style="left:15%;animation-delay:2s"></div>
+    <div class="particle" style="left:25%;animation-delay:1s"></div>
+    <div class="particle" style="left:35%;animation-delay:4s"></div>
+    <div class="particle" style="left:45%;animation-delay:2.5s"></div>
+    <div class="particle" style="left:55%;animation-delay:3s"></div>
+    <div class="particle" style="left:65%;animation-delay:5s"></div>
+    <div class="particle" style="left:75%;animation-delay:1.5s"></div>
+    <div class="particle" style="left:85%;animation-delay:3.5s"></div>
+    <div class="particle" style="left:95%;animation-delay:6s"></div>
+  </div>
 
-<img src="banner.png" class="banner">
+  <div class="container">
 
-<div class="content">
+    <!-- Icon -->
+    <div class="failed-icon"></div>
 
-<div class="title">
-RINGKASAN PEMESANAN
-</div>
+    <!-- Title -->
+    <div class="title">
+      <span>PEMBAYARAN</span>
+      <span> GAGAL</span>
+    </div>
 
-<div class="row">
-<div class="label">Nama Event</div>
-<div class="value">WESTLIFE 25 YEARS OF HITS</div>
-</div>
+    <div class="subtitle">
+      Transaksi Anda tidak dapat diproses.<br>
+      Silakan periksa kembali data pemesanan Anda.
+    </div>
 
-<div class="row">
-<div class="label">Tanggal</div>
-<div class="value">Saturday, 23 January 2027</div>
-</div>
+    <!-- Event -->
+    <div class="event-card">
 
-<div class="row">
-<div class="label">Venue</div>
-<div class="value">Gelora Bung Karno Main Stadium</div>
-</div>
+      <div class="event-left">
+        <h3>25 YEARS OF HITS</h3>
 
-<div class="row">
-<div class="label">Layanan</div>
-<div class="value">Ticketing Service / Jastip Tiket</div>
-</div>
+        <div class="westlife">WESTLIFE</div>
 
-<div class="row">
-<div class="label">Status</div>
-<div class="value">
-<span class="failed">
-FAILED
-</span>
-</div>
-</div>
+        <div class="number25">25</div>
 
-<div class="row">
-<div class="label">Waktu</div>
-<div class="value" id="waktu">
--
-</div>
-</div>
+        <div class="tour">
+          THE ANNIVERSARY<br>
+          WORLD TOUR
+        </div>
+      </div>
 
-<div class="row">
-<div class="label">Order ID</div>
-<div class="value" id="orderid">
--
-</div>
-</div>
+      <div class="event-right">
+        <div class="date">
+          SATURDAY, 23 JANUARY 2027
+        </div>
 
-<div class="bottom">
-<span></span>
-</div>
+        <div class="venue">
+          GELORA BUNG KARNO<br>
+          MAIN STADIUM
+        </div>
 
-</div>
+        <div class="website">
+          WESTLIFESTADIUMSHOWJKT.COM
+        </div>
+      </div>
 
-</div>
+    </div>
 
-<script>
+    <!-- Summary -->
+    <div class="summary">
 
-/*
-AMBIL DATA DARI INDEX.HTML
-*/
+      <div class="summary-title">
+        <div class="ticket-icon"></div>
+        RINGKASAN PEMESANAN
+      </div>
 
-const dataNama = localStorage.getItem('nama') || '-';
-const dataKategori = localStorage.getItem('kategori') || '-';
-const dataJumlah = localStorage.getItem('jumlah') || '-';
-const dataTotal = localStorage.getItem('total') || '-';
+      <div class="summary-grid">
 
-const now = new Date();
+        <div class="item">
+          <div class="label">NAMA EVENT</div>
+          <div class="value">
+            WESTLIFE 25 YEARS OF HITS<br>
+            THE ANNIVERSARY WORLD TOUR
+          </div>
+        </div>
 
-document.getElementById('waktu').innerHTML =
-now.toLocaleDateString('id-ID') +
-', ' +
-now.toLocaleTimeString('id-ID');
+        <div class="item">
+          <div class="label">TANGGAL</div>
+          <div class="value">
+            SATURDAY, 23 JANUARY 2027
+          </div>
+        </div>
 
-const random =
-'WL25-' +
-Math.floor(Math.random()*99999999);
+        <div class="item">
+          <div class="label">VENUE</div>
+          <div class="value">
+            GELORA BUNG KARNO<br>
+            MAIN STADIUM
+          </div>
+        </div>
 
-document.getElementById('orderid').innerHTML =
-random;
+        <div class="item">
+          <div class="label">LAYANAN</div>
+          <div class="value">
+            Ticketing Service / Jastip Tiket
+          </div>
+        </div>
 
-</script>
+        <div class="item">
+          <div class="label">STATUS PEMBAYARAN</div>
+          <div class="value">
+            <span class="failed-badge">FAILED</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="label">WAKTU TRANSAKSI</div>
+          <div class="value">
+            23 Mei 2025, 11:21 WIB
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="label">ORDER ID</div>
+          <div class="value">
+            WL25-23052025-1121-FAILED
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Warning -->
+    <div class="warning">
+
+      <div class="warning-icon">!</div>
+
+      <div>
+        <h3>DATA TIDAK LENGKAP</h3>
+        <p>Silahkan periksa kembali data pemesanan anda</p>
+        <small>
+          Pastikan semua data sudah benar dan lengkap sebelum melakukan pembayaran.
+        </small>
+      </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+
+      <button class="btn btn-dark">
+        ↻ COBA LAGI
+      </button>
+
+      <button class="btn btn-red">
+        🏠 KEMBALI KE BERANDA
+      </button>
+
+    </div>
+
+    <footer>
+      © 2025 Ticketing Service. All rights reserved.
+    </footer>
+
+  </div>
 
 </body>
 </html>
